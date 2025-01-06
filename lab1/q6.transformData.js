@@ -1,3 +1,4 @@
+"use strict";
 // The Data given to me
 
 var orders = [
@@ -27,6 +28,11 @@ var orders = [
   },
 ];
 
+/**
+ *
+ * @param {string} itemsString
+ * @returns {number} total amount of items
+ */
 function calculateTotalItems(itemsString) {
   var items = itemsString.split(",");
   var total = 0;
@@ -40,12 +46,28 @@ function calculateTotalItems(itemsString) {
   return total;
 }
 
+/**
+ *
+ * @param {Date} orderDate
+ * @param {Date} deliveryDate
+ * @returns {number} delivery duration
+ */
 function calculateDeliveryDuration(orderDate, deliveryDate) {
   var start = new Date(orderDate);
   var end = new Date(deliveryDate);
   return Math.floor((end - start) / (1000 * 60 * 60 * 24));
 }
 
+/**
+ * Parses a delivery address string into structured object components
+ *
+ * @param {string} address - The full address string in format "buildingNumber, street, city, country"
+ * @returns {object} Parsed address object with the following properties:
+ *   @property {(number|string)} buildingNumber - Building identifier (number if numeric, string otherwise)
+ *   @property {string} street - Street name
+ *   @property {string} city - City name
+ *   @property {string} country - Country name
+ */
 function parseAddress(address) {
   var parts = address.split(",");
   var buildingNumber = parts[0].trim();
