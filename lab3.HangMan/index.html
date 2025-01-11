@@ -5,10 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HangMan Game</title>
     <link rel="stylesheet" href="style.css" />
+
     <script src="words-data.js" defer></script>
     <script src="script.js" defer></script>
   </head>
   <body>
+    <div class="difficulty-modal" id="difficultyModal">
+      <div class="content">
+        <h3>Select Category</h3>
+        <div class="category-buttons">
+          <button class="category-btn" data-category="animals">Animals</button>
+          <button class="category-btn" data-category="fruits">Fruits</button>
+          <button class="category-btn" data-category="celebrities">
+            Celebrities
+          </button>
+          <button class="category-btn" data-category="countries">
+            Countries
+          </button>
+          <button class="category-btn" data-category="sport">Sports</button>
+        </div>
+        <h3>Select Difficulty</h3>
+        <div class="difficulty-buttons">
+          <button class="difficulty-btn" data-level="easy">Easy</button>
+          <button class="difficulty-btn" data-level="medium">Medium</button>
+          <button class="difficulty-btn" data-level="hard">Hard</button>
+        </div>
+      </div>
+    </div>
     <div class="finished-modal" id="finishedModal">
       <div class="content">
         <img src="assets/images/sad-gif-3.gif" alt="" />
@@ -20,17 +43,22 @@
     <div class="container">
       <div class="hangman-img">
         <img src="assets/images/hangman-0.svg" alt="Hangman-status" />
-        <h1>Please don't hang your Man</h1>
+        <h1>Please Save your Man</h1>
       </div>
 
       <div class="game-area">
         <ul class="word-area" id="word-area"></ul>
-        <h3 class="hint">
-          Hint: <span id="hintContent">It's a programming language</span>
-        </h3>
+        <div class="hint-container">
+          <button id="showHint">Show Hint (-30s)</button>
+          <h3 class="hint">Hint: <span id="hintContent"></span></h3>
+        </div>
         <h3 class="guesses">
           Incorrect Guesses: <span id="wrongGuesses">0 / 6</span>
         </h3>
+        <div class="timer">Time: <span id="timerDisplay">60</span>s</div>
+        <div class="category-display">
+          Category: <span id="categoryText"></span>
+        </div>
         <div class="keyboard" id="keyboard"></div>
       </div>
     </div>

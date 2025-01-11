@@ -6,22 +6,45 @@ var guessesCountDisplay = document.getElementById("wrongGuesses");
 var hangManImage = document.querySelector(".hangman-img img");
 var gameModalSection = document.getElementById("finishedModal");
 var playAgainButton = document.getElementById("playAgain");
+var difficultyModal = document.getElementById("difficultyModal");
+var difficultyBtns = document.querySelectorAll(".difficulty-btn");
+var timerDisplay = document.getElementById("timerDisplay");
+var showHintButton = document.getElementById("showHint");
+var hintContainer = document.querySelector(".hint");
+var categoryText = document.getElementById("categoryText");
 
-// Global Variables
+// assistant variable
+var selectedDifficulty = "";
+var timeLeft = 60;
+var timer;
 var currentWord = "",
   correctLetters,
   wrongGuesses,
   maxWrongGuesses = 6;
+var currentWordObj = null;
+var isHintUsed = false;
+var baseTime = 60;
+var selectedCategory = "";
+var lastWord = "";
 
-function resetGame() {
+function resetGameState() {
   correctLetters = [];
   wrongGuesses = 0;
+  isHintUsed = false; // Reset hint state
+  timeLeft = baseTime; // Reset to base time (60s)
+  startTimer();
+  hintContainer.style.display = "none";
+  showHintButton.style.display = "block";
+
   wordDisplayDiv.innerHTML = currentWord
     .split("")
     .map(function () {
       return "<li class='letter'></li>";
     })
     .join("");
+
+  hintPart.textContent = currentWordObj.hint;
+
   keyboardSection.querySelectorAll("button").forEach(function (key) {
     key.disabled = false;
   });
@@ -42,11 +65,6 @@ function generateRandomWord() {
 
   currentWord = currentWordData.word;
 
-  console.log(
-    currentWordData.word,
-    currentWordData.hint,
-    currentWordData.level
-  );
   hintPart.textContent = currentWordData.hint;
   wordDisplayDiv.innerHTML = currentWordData.word
     .split("")
@@ -57,6 +75,7 @@ function generateRandomWord() {
 }
 
 function gameOver(finishedStatus) {
+  clearInterval(timer);
   setTimeout(function () {
     var modalText = finishedStatus ? "You found the word!" : "Game Over!";
     gameModalSection.querySelector("img").src =
@@ -83,6 +102,11 @@ function clickAKey(key, letterClicked) {
     wrongGuesses++;
     hangManImage.src = "./assets/images/hangman-" + wrongGuesses + ".svg";
   }
+
+  // Reset timer after each guess (correct or wrong)
+  timeLeft = isHintUsed ? 30 : 60;
+  startTimer();
+
   guessesCountDisplay.textContent = wrongGuesses + " / " + maxWrongGuesses;
   key.disabled = true;
 
@@ -103,4 +127,123 @@ for (var j = 97; j <= 122; j++) {
   })(j);
 }
 
-playAgainButton.addEventListener("click", generateRandomWord);
+playAgainButton.addEventListener("click", function () {
+  playAgainButton.disabled = true;
+  gameModalSection.classList.remove("show");
+  difficultyModal.style.display = "flex";
+});
+
+function getCategoryFromWord(word) {
+  for (var category in wordData) {
+    if (
+      wordData[category].some(function (item) {
+        return item.word === word;
+      })
+    ) {
+      return category;
+    }
+  }
+  return "";
+}
+
+function initializeSelections() {
+  var categoryBtns = document.querySelectorAll(".category-btn");
+
+  categoryBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      selectedCategory = this.dataset.category;
+      categoryBtns.forEach(function (b) {
+        b.classList.remove("selected");
+      });
+      this.classList.add("selected");
+    });
+  });
+
+  Array.prototype.forEach.call(difficultyBtns, function (btn) {
+    btn.addEventListener("click", function () {
+      if (!selectedCategory) {
+        alert("Please select a category first!");
+        return;
+      }
+
+      selectedDifficulty = this.dataset.level;
+      difficultyModal.style.display = "none";
+      playAgainButton.disabled = false;
+
+      var availableWords = wordData[selectedCategory].filter(function (word) {
+        return word.level === selectedDifficulty && word.word !== lastWord;
+      });
+
+      currentWordObj =
+        availableWords[Math.floor(Math.random() * availableWords.length)];
+      currentWord = currentWordObj.word;
+      lastWord = currentWord; // Store current word
+      categoryText.textContent =
+        selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1);
+      resetGameState();
+    });
+  });
+}
+
+function resetGame() {
+  difficultyModal.style.display = "flex";
+}
+
+function startGame() {
+  var allWords = []
+    .concat(wordData.animals)
+    .concat(wordData.fruits)
+    .concat(wordData.celebrities)
+    .concat(wordData.countries)
+    .concat(wordData.sport);
+
+  var availableWords = allWords.filter(function (word) {
+    return word.level === selectedDifficulty;
+  });
+
+  currentWord =
+    availableWords[Math.floor(Math.random() * availableWords.length)].word;
+  resetGameState();
+}
+
+function startTimer() {
+  clearInterval(timer);
+  timerDisplay.textContent = timeLeft;
+  timer = setInterval(function () {
+    timeLeft--;
+    timerDisplay.textContent = timeLeft;
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      gameOver(false);
+    }
+  }, 1000);
+}
+
+function resetTimer() {
+  clearInterval(timer);
+  timeLeft = 60;
+  timerDisplay.textContent = timeLeft;
+}
+
+showHintButton.addEventListener("click", function () {
+  if (timeLeft >= 30) {
+    isHintUsed = true;
+    timeLeft = 30;
+    startTimer();
+    hintContainer.style.display = "block";
+    showHintButton.style.display = "none";
+  } else {
+    alert("Not enough time left to use hint!");
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  initializeSelections();
+  difficultyModal.style.display = "flex";
+  playAgainButton.disabled = true;
+});
+
+function updateCategory(category) {
+  categoryText.textContent =
+    category.charAt(0).toUpperCase() + category.slice(1);
+}
