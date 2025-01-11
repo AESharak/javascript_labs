@@ -18,24 +18,20 @@ function resetGame() {
   wrongGuesses = 0;
   wordDisplayDiv.innerHTML = currentWord
     .split("")
-    .map(() => `<li class='letter'></li>`)
+    .map(function () {
+      return "<li class='letter'></li>";
+    })
     .join("");
-  keyboardSection
-    .querySelectorAll("button")
-    .forEach((key) => (key.disabled = false));
-  guessesCountDisplay.textContent = `${wrongGuesses} / ${maxWrongGuesses}`;
-  hangManImage.src = `./assets/images/hangman-${wrongGuesses}.svg`;
+  keyboardSection.querySelectorAll("button").forEach(function (key) {
+    key.disabled = false;
+  });
+  guessesCountDisplay.textContent = wrongGuesses + " / " + maxWrongGuesses;
+  hangManImage.src = "./assets/images/hangman-" + wrongGuesses + ".svg";
   gameModalSection.classList.remove("show");
 }
 
 function generateRandomWord() {
-  var categories = [
-    "animals",
-    "fruits",
-    "celebrities",
-    "countries",
-    "countries",
-  ];
+  var categories = ["animals", "fruits", "celebrities", "countries", "sport"];
   resetGame();
   var randomCategory =
     categories[Math.floor(Math.random() * categories.length)];
@@ -54,29 +50,29 @@ function generateRandomWord() {
   hintPart.textContent = currentWordData.hint;
   wordDisplayDiv.innerHTML = currentWordData.word
     .split("")
-    .map((letter) => `<li class='letter'></li>`)
+    .map(function () {
+      return "<li class='letter'></li>";
+    })
     .join("");
 }
 
 function gameOver(finishedStatus) {
-  setTimeout(() => {
+  setTimeout(function () {
     var modalText = finishedStatus ? "You found the word!" : "Game Over!";
-    gameModalSection.querySelector("img").src = `./assets/images/${
-      finishedStatus ? "victory" : "lost"
-    }.gif`;
-    gameModalSection.querySelector("h3").textContent = `${
-      finishedStatus ? "Congratulations!" : "Game Over!"
-    }`;
-    gameModalSection.querySelector(
-      "p"
-    ).innerHTML = `${modalText} <span>${currentWord}</span>`;
+    gameModalSection.querySelector("img").src =
+      "./assets/images/" + (finishedStatus ? "victory" : "lost") + ".gif";
+    gameModalSection.querySelector("h3").textContent = finishedStatus
+      ? "Congratulations!"
+      : "Game Over!";
+    gameModalSection.querySelector("p").innerHTML =
+      modalText + " <span>" + currentWord + "</span>";
     gameModalSection.classList.add("show");
   }, 250);
 }
 
 function clickAKey(key, letterClicked) {
   if (currentWord.includes(letterClicked)) {
-    currentWord.split("").forEach((letter, index) => {
+    currentWord.split("").forEach(function (letter, index) {
       if (letter === letterClicked) {
         correctLetters.push(letter);
         wordDisplayDiv.querySelectorAll("li")[index].textContent = letter;
@@ -85,9 +81,9 @@ function clickAKey(key, letterClicked) {
     });
   } else {
     wrongGuesses++;
-    hangManImage.src = `./assets/images/hangman-${wrongGuesses}.svg`;
+    hangManImage.src = "./assets/images/hangman-" + wrongGuesses + ".svg";
   }
-  guessesCountDisplay.textContent = `${wrongGuesses} / ${maxWrongGuesses}`;
+  guessesCountDisplay.textContent = wrongGuesses + " / " + maxWrongGuesses;
   key.disabled = true;
 
   if (wrongGuesses === maxWrongGuesses) return gameOver(false);
@@ -101,9 +97,9 @@ for (var j = 97; j <= 122; j++) {
   key.innerText = String.fromCharCode(j);
   keyboardSection.appendChild(key);
   (function (currentJ) {
-    key.addEventListener("click", (e) =>
-      clickAKey(e.target, String.fromCharCode(currentJ))
-    );
+    key.addEventListener("click", function (e) {
+      clickAKey(e.target, String.fromCharCode(currentJ));
+    });
   })(j);
 }
 
