@@ -159,7 +159,7 @@ function initializeSelections() {
     });
   });
 
-  Array.prototype.forEach.call(difficultyBtns, function (btn) {
+  Array.from(difficultyBtns).forEach(function (btn) {
     btn.addEventListener("click", function () {
       if (!selectedCategory) {
         alert("Please select a category first!");
