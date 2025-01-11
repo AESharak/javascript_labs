@@ -1,0 +1,178 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  min-height: 100vh;
+  padding: 0 0.825rem;
+  background-color: #0ea5e9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  max-width: 60rem;
+  padding: 4rem 2.5rem;
+  background-color: #fff;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 0.625rem;
+  gap: 4.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.hangman-img img {
+  max-width: 16rem;
+}
+
+.hangman-img h1 {
+  font-size: 1.5rem;
+  margin-top: 1.25rem;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.word-area {
+  display: flex;
+  gap: 0.625rem;
+  list-style: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.word-area .letter {
+  font: 700 2rem "Roboto", sans-serif;
+  text-align: center;
+  width: 1.825rem;
+  margin-bottom: 2.75rem;
+  border-bottom: 2px solid #000000e8;
+}
+
+.word-area .letter.guessed {
+  border-color: transparent;
+  color: #22c55e;
+  margin: -2.75rem 0 2rem;
+  text-transform: uppercase;
+}
+
+.game-area h3 {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.game-area h3 span {
+  font-weight: 700;
+}
+
+.game-area .guesses span {
+  color: #dc2626;
+}
+
+.game-area .keyboard {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.75rem;
+  gap: 0.275rem;
+  flex-wrap: wrap;
+}
+
+:where(.finished-modal, .keyboard) button {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  background-color: #0284c7;
+  text-transform: uppercase;
+  border: none;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.keyboard button {
+  width: calc(100% / 9 - 0.325rem);
+  padding: 0.5rem;
+}
+
+.keyboard button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.finished-modal {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: #00000060;
+  top: 0;
+  left: 0;
+  display: flex;
+  opacity: 0;
+  z-index: -10;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s ease;
+}
+
+.finished-modal.show {
+  z-index: 10;
+  opacity: 1;
+}
+
+:where(.finished-modal, .keyboard) button:hover {
+  background-color: #0ea5e9;
+}
+
+.finished-modal .content {
+  text-align: center;
+  background-color: #fff;
+  max-width: 26rem;
+  width: 100%;
+  border-radius: 0.725rem;
+  padding: 2rem;
+}
+
+.finished-modal p {
+  font-size: 1.1rem;
+  margin: 1rem 0 2rem;
+  font-weight: 500;
+}
+
+.finished-modal h3 {
+  font-size: 1.5rem;
+}
+
+.finished-modal img {
+  margin: 1rem 0;
+  max-width: 8rem;
+  border-radius: 0.25rem;
+}
+
+.finished-modal .content span {
+  color: #0284c7;
+  font-weight: 600;
+}
+
+.finished-modal button {
+  padding: 0.825rem 1.25rem;
+}
+
+@media (max-width: 769px) {
+  .container {
+    flex-direction: column;
+    padding: 2rem 1rem;
+    align-items: center;
+  }
+  .hangman-img {
+    max-width: 12rem;
+  }
+
+  .hangman-img h1 {
+    display: none;
+  }
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HangMan Game</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="words-data.js" defer></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="finished-modal" id="finishedModal">
+      <div class="content">
+        <img src="assets/images/sad-gif-3.gif" alt="" />
+        <h3>Game Over!</h3>
+        <p>The correct word was:</p>
+        <button class="play-again" id="playAgain">Play Again</button>
+      </div>
+    </div>
+    <div class="container">
+      <div class="hangman-img">
+        <img src="assets/images/hangman-0.svg" alt="Hangman-status" />
+        <h1>Please don't hang your Man</h1>
+      </div>
+
+      <div class="game-area">
+        <ul class="word-area" id="word-area"></ul>
+        <h3 class="hint">
+          Hint: <span id="hintContent">It's a programming language</span>
+        </h3>
+        <h3 class="guesses">
+          Incorrect Guesses: <span id="wrongGuesses">0 / 6</span>
+        </h3>
+        <div class="keyboard" id="keyboard"></div>
+      </div>
+    </div>
+  </body>
+</html>
