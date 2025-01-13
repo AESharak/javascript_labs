@@ -36,12 +36,7 @@ function resetGameState() {
   hintContainer.style.display = "none";
   showHintButton.style.display = "block";
 
-  wordDisplayDiv.innerHTML = currentWord
-    .split("")
-    .map(function () {
-      return "<li class='letter'></li>";
-    })
-    .join("");
+  wordDisplayDiv.innerHTML = renderPlaceHolders(currentWord);
 
   hintPart.textContent = currentWordObj.hint;
 
@@ -66,7 +61,11 @@ function generateRandomWord() {
   currentWord = currentWordData.word;
 
   hintPart.textContent = currentWordData.hint;
-  wordDisplayDiv.innerHTML = currentWordData.word
+  wordDisplayDiv.innerHTML = renderPlaceHolders(currentWordData.word);
+}
+
+function renderPlaceHolders(word) {
+  return word
     .split("")
     .map(function () {
       return "<li class='letter'></li>";
