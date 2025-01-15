@@ -1,4 +1,4 @@
-const wordData = {
+export const wordData = {
   animals: [
     { word: "cat", hint: "Common household pet", level: "easy" },
     {
