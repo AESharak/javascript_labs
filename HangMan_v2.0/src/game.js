@@ -49,6 +49,7 @@ export class Game {
       this.currentWord
     );
     this.elements.hintContent.textContent = this.currentWordObj.hint;
+    this.elements.hangmanImg.src = `./assets/images/hangman-${this.wrongGuesses}.svg`;
 
     this.keyboard.reset();
     this.timer.start(60);
